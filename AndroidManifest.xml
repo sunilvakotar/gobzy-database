@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.ruby.rkandro"
+          android:versionCode="1"
+          android:versionName="1.0">
+
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="19"/>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+
+    <application
+            android:icon="@drawable/icon"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Styled">
+        <activity android:name=".CategoryList" android:label="@string/app_name"
+                  android:configChanges="orientation|screenSize|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".StoryList" android:configChanges="orientation|screenSize|keyboardHidden"/>
+        <activity android:name=".StoryListDetail" android:configChanges="orientation|screenSize|keyboardHidden"/>
+
+        <activity android:name="com.startapp.android.eula.EULAActivity"
+                  android:theme="@android:style/Theme.Translucent"
+                  android:configChanges="keyboard|keyboardHidden|orientation" />
+        <activity android:name="com.startapp.android.publish.list3d.List3DActivity"
+                  android:taskAffinity="com.ruby.rkandro.AppWall"
+                  android:theme="@android:style/Theme" />
+        <activity android:name="com.startapp.android.publish.AppWallActivity"
+                  android:theme="@android:style/Theme.Translucent" android:taskAffinity="com.ruby.rkandro.AppWall"
+                  android:configChanges="orientation|keyboardHidden" />
+
+        <!-- Your developer ID and app ID -->
+        <meta-data android:name="com.startapp.android.DEV_ID" android:value= "105147417"/>
+        <meta-data android:name="com.startapp.android.APP_ID" android:value= "205460888"/>
+
+        <meta-data android:name="com.lmsa.cqkv143768.APPID" android:value="178714" />
+        <meta-data android:name="com.lmsa.cqkv143768.APIKEY" android:value="android*1365437438143768527"/>
+        <activity android:exported="false" android:name="com.lmsa.cqkv143768.SmartWallActivity"
+                  android:configChanges="orientation|screenSize"
+                  android:theme="@android:style/Theme.Translucent" />
+
+        <activity android:name="com.lmsa.cqkv143768.BrowserActivity"
+                  android:configChanges="orientation|screenSize" />
+        <activity android:name="com.lmsa.cqkv143768.VideoAdActivity"
+                  android:configChanges="orientation|screenSize" android:screenOrientation="landscape"
+                  android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>
+
+    </application>
+</manifest>
+

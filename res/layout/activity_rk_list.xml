@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/light_black"
+    >
+
+	<ListView
+        android:id="@+id/lviRkList"
+        android:layout_marginTop="3dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/myAdView"
+        android:dividerHeight="1dp">
+    </ListView>
+
+    <com.lmsa.cqkv143768.AdView
+            xmlns:ap="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/myAdView"
+            android:layout_alignParentBottom="true"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            ap:animation="fade"
+            ap:banner_type="inappad"
+            ap:placementType="interstitial"
+            ap:test_mode="false"
+            ap:canShowMR="false"
+            />
+    
+	<!--<com.google.ads.AdView android:layout_width="fill_parent"
+                           android:layout_height="wrap_content"
+                           android:id="@+id/adview"
+                           android:layout_alignParentBottom="true"
+                           ads:adUnitId="a15180bae6da4bf"
+                           ads:adSize="SMART_BANNER"
+                           ads:loadAdOnCreate="true"
+        ads:testDevices="TEST_EMULATOR"/>	-->
+
+</RelativeLayout>
