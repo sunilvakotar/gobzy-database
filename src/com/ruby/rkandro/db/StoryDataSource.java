@@ -79,6 +79,18 @@ public class StoryDataSource {
 		cursor.close();
 		return cList;
 	}
+
+    public Integer getStoryCount(){
+        Cursor cursor = database.rawQuery("select count(*) from " + Constant.TABLE_STORY, null);
+
+        // ensure there is at least one row and one column
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0 && cursor.getColumnCount() > 0) {
+            return cursor.getInt(0);
+        } else {
+            return 0;
+        }
+    }
 	
 	public Story getStoryById(int storyId){
 		Story story = null;

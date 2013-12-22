@@ -56,6 +56,7 @@ public class CategoryList extends SherlockActivity implements AdCallbackListener
 
     StoryDataSource dataSource;
     SharedPreferences settings;
+    private boolean checkUpdate = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,15 +87,15 @@ public class CategoryList extends SherlockActivity implements AdCallbackListener
             }
         });
 
+        // first time task
+        // creating connection detector class instance
+        cd = new ConnectionDetector(getApplicationContext());
+        // get Internet status
+        boolean isInternetPresent = cd.isConnectingToInternet();
+
         if (settings.getBoolean("my_first_time", true)) {
             //the app is being launched for first time, do something
             Log.d("Comments", "First time :: Preparing Database.");
-
-            // first time task
-            // creating connection detector class instance
-            cd = new ConnectionDetector(getApplicationContext());
-            // get Internet status
-            boolean isInternetPresent = cd.isConnectingToInternet();
 
             if (isInternetPresent) {
                 // Internet Connection is Present
@@ -113,8 +114,12 @@ public class CategoryList extends SherlockActivity implements AdCallbackListener
             // record the fact that the app has been started at least once
             settings.edit().putBoolean("my_first_time", false).commit();
         }else{
+            if (isInternetPresent) {
+                checkUpdate = true;
+                // Internet Connection is Present
+                new RkDetail().execute(new Object());
+            }
             List<Category> categories = dataSource.getCategories();
-
             categoryAdapter = new CategoryAdapter(CategoryList.this, categories);
             lv.setAdapter(categoryAdapter);
             categoryAdapter.notifyDataSetChanged();
@@ -156,7 +161,16 @@ public class CategoryList extends SherlockActivity implements AdCallbackListener
     public boolean onOptionsItemSelected(MenuItem item) {
         String title = (String) item.getTitle();
         if (title.equalsIgnoreCase("refresh")) {
-            new RkDetail().execute(new Object());
+            boolean isInternetPresent = cd.isConnectingToInternet();
+
+            if (isInternetPresent) {
+                new RkDetail().execute(new Object());
+            } else {
+                // Internet connection is not present
+                // Ask user to connect to Internet
+                showAlertDialog(CategoryList.this, "No Internet Connection",
+                        "You don't have internet connection.");
+            }
         }
         return true;
     }
@@ -237,39 +251,57 @@ public class CategoryList extends SherlockActivity implements AdCallbackListener
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    int total = 0;
+    int dbCount = 0;
     class RkDetail extends AsyncTask<Object, Void, String> {
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = ProgressDialog.show(CategoryList.this, "",
-                    "Updating....", true, false);
+            if (!checkUpdate) {
+                progressDialog = ProgressDialog.show(CategoryList.this, "",
+                        "Updating....", true, false);
+            }
         }
 
         protected String doInBackground(Object... parametros) {
 
             String result = null;
             try {
-                String envelop = String.format(SoapWebServiceInfo.CATEGORY_LIST_ENVELOPE);
-                result = SoapWebServiceUtility.callWebService(envelop, SoapWebServiceInfo.CATEGORY_LIST_SOAP_ACTION, SoapWebServiceInfo.CATEGORY_LIST_RESULT_TAG);
-                if(result != null){
-                    JSONObject resJsonObj = new JSONObject(result);
-                    categoryList = convertJsonToCategoryList(resJsonObj);
-                    dataSource.addAllCategory(categoryList);
-                    if(categoryList.size() > 0){
-                        List<Story> storyList;
-                        for (Category category : categoryList) {
-                            envelop = String.format(SoapWebServiceInfo.STORY_ENVELOPE, category.getId());
-                            result = SoapWebServiceUtility.callWebService(envelop, SoapWebServiceInfo.STORY_SOAP_ACTION, SoapWebServiceInfo.STORY_RESULT_TAG);
-                            if (result != null) {
-                                resJsonObj = new JSONObject(result);
-                                storyList = convertJsonToStoryList(resJsonObj);
-                                dataSource.addStories(storyList);
+                if(checkUpdate){
+                    String envelop = String.format(SoapWebServiceInfo.CHECK_UPDATE_ENVELOPE);
+                    result = SoapWebServiceUtility.callWebService(envelop, SoapWebServiceInfo.CHECK_UPDATE_ACTION, SoapWebServiceInfo.CHECK_UPDATE_RESULT_TAG);
+                    if(result != null){
+                        JSONObject resJsonObj = new JSONObject(result);
+                        JSONArray detailArray = (JSONArray) resJsonObj.get("Total");
+                        total = (Integer) detailArray.get(0);
+                        dbCount = dataSource.getStoryCount();
+
+                    }
+                }else{
+                    String envelop = String.format(SoapWebServiceInfo.CATEGORY_LIST_ENVELOPE);
+                    result = SoapWebServiceUtility.callWebService(envelop, SoapWebServiceInfo.CATEGORY_LIST_SOAP_ACTION, SoapWebServiceInfo.CATEGORY_LIST_RESULT_TAG);
+                    if(result != null){
+                        JSONObject resJsonObj = new JSONObject(result);
+                        categoryList = convertJsonToCategoryList(resJsonObj);
+                        dataSource.addAllCategory(categoryList);
+                        if(categoryList.size() > 0){
+                            List<Story> storyList;
+                            for (Category category : categoryList) {
+                                envelop = String.format(SoapWebServiceInfo.STORY_ENVELOPE, category.getId());
+                                result = SoapWebServiceUtility.callWebService(envelop, SoapWebServiceInfo.STORY_SOAP_ACTION, SoapWebServiceInfo.STORY_RESULT_TAG);
+                                if (result != null) {
+                                    resJsonObj = new JSONObject(result);
+                                    storyList = convertJsonToStoryList(resJsonObj);
+                                    dataSource.addStories(storyList);
+                                }
                             }
                         }
                     }
+                    settings.edit().putBoolean("my_first_time", false).commit();
                 }
-                settings.edit().putBoolean("my_first_time", false).commit();
             } catch (Exception e) {
-                progressDialog.dismiss();
+                if (!checkUpdate) {
+                    progressDialog.dismiss();
+                }
             }
 
             return result;
@@ -277,19 +309,27 @@ public class CategoryList extends SherlockActivity implements AdCallbackListener
 
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            if (categoryList.size() > 0) {
-                categoryAdapter = new CategoryAdapter(CategoryList.this, categoryList);
-                lv.setAdapter(categoryAdapter);
-                categoryAdapter.notifyDataSetChanged();
+            if (checkUpdate) {
+                if(total == dbCount){
+                    showAlertDialog(CategoryList.this, "Update", "New Story Available.");
+                    checkUpdate = false;
+                }
+            } else {
+                if (categoryList.size() > 0) {
+                    categoryAdapter = new CategoryAdapter(CategoryList.this, categoryList);
+                    lv.setAdapter(categoryAdapter);
+                    categoryAdapter.notifyDataSetChanged();
+                }
+                progressDialog.dismiss();
             }
 
-            progressDialog.dismiss();
+
         }
     }
 
-
+    private AlertDialog alertDialog;
     public void showAlertDialog(Context context, String title, String message) {
-        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+        alertDialog = new AlertDialog.Builder(context).create();
 
         // Setting Dialog Title
         alertDialog.setTitle(title);
@@ -298,12 +338,13 @@ public class CategoryList extends SherlockActivity implements AdCallbackListener
         alertDialog.setMessage(message);
 
         // Setting alert dialog icon
-        alertDialog.setIcon(R.drawable.fail);
+        //alertDialog.setIcon(R.drawable.fail);
 
         // Setting OK Button
         alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                finish();
+                dialog.dismiss();
+                //finish();
             }
         });
 
