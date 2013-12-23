@@ -1,4 +1,4 @@
-package com.ruby.rkandro;
+package com.ruby.gobzy.sync;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +14,13 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.lmsa.cqkv143768.AdCallbackListener;
-import com.lmsa.cqkv143768.AdView;
-import com.lmsa.cqkv143768.AirPlay;
-import com.ruby.rkandro.adapter.CategoryAdapter;
-import com.ruby.rkandro.db.StoryDataSource;
-import com.ruby.rkandro.pojo.Category;
-import com.ruby.rkandro.pojo.Story;
+import com.ukfc.klno167797.AdCallbackListener;
+import com.ukfc.klno167797.AdView;
+import com.ukfc.klno167797.AirSDK;
+import com.ruby.gobzy.sync.adapter.CategoryAdapter;
+import com.ruby.gobzy.sync.db.StoryDataSource;
+import com.ruby.gobzy.sync.pojo.Category;
+import com.ruby.gobzy.sync.pojo.Story;
 import com.searchboxsdk.android.StartAppSearch;
 import com.startapp.android.publish.StartAppAd;
 import org.json.JSONArray;
@@ -36,8 +36,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.ruby.rkandro.soap.SoapWebServiceInfo;
-import com.ruby.rkandro.soap.SoapWebServiceUtility;
+import com.ruby.gobzy.sync.soap.SoapWebServiceInfo;
+import com.ruby.gobzy.sync.soap.SoapWebServiceUtility;
 
 
 public class CategoryList extends SherlockActivity implements AdCallbackListener.MraidCallbackListener {
@@ -52,7 +52,7 @@ public class CategoryList extends SherlockActivity implements AdCallbackListener
     ConnectionDetector cd;
 
     private StartAppAd startAppAd = new StartAppAd(this);
-    AirPlay airPlay;
+    AirSDK airPlay;
 
     StoryDataSource dataSource;
     SharedPreferences settings;
@@ -101,7 +101,7 @@ public class CategoryList extends SherlockActivity implements AdCallbackListener
                 // Internet Connection is Present
                 new RkDetail().execute(new Object());
 
-                airPlay=new AirPlay(this, adCallbackListener, true);
+                airPlay=new AirSDK(this, adCallbackListener, true);
                 AdView adView=(AdView)findViewById(R.id.myAdView);
                 adView.setAdListener(this);
             } else {
@@ -126,7 +126,7 @@ public class CategoryList extends SherlockActivity implements AdCallbackListener
         }
 
 
-        airPlay=new AirPlay(this, adCallbackListener, true);
+        airPlay=new AirSDK(this, adCallbackListener, true);
         AdView adView=(AdView)findViewById(R.id.myAdView);
         adView.setAdListener(this);
         AppRater.app_launched(CategoryList.this);
@@ -271,8 +271,9 @@ public class CategoryList extends SherlockActivity implements AdCallbackListener
                     result = SoapWebServiceUtility.callWebService(envelop, SoapWebServiceInfo.CHECK_UPDATE_ACTION, SoapWebServiceInfo.CHECK_UPDATE_RESULT_TAG);
                     if(result != null){
                         JSONObject resJsonObj = new JSONObject(result);
-                        JSONArray detailArray = (JSONArray) resJsonObj.get("Total");
-                        total = (Integer) detailArray.get(0);
+                        /*JSONArray detailArray = (JSONArray) resJsonObj.get("Total");
+                        total = (Integer) detailArray.get(0);*/
+                        total = (Integer) resJsonObj.get("Total");
                         dbCount = dataSource.getStoryCount();
 
                     }
@@ -310,8 +311,8 @@ public class CategoryList extends SherlockActivity implements AdCallbackListener
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             if (checkUpdate) {
-                if(total == dbCount){
-                    showAlertDialog(CategoryList.this, "Update", "New Story Available.");
+                if(total > dbCount){
+                    showAlertDialog(CategoryList.this, "Update", "New Story Available on cloud. You can update by click refresh button on top right corner.");
                     checkUpdate = false;
                 }
             } else {
@@ -329,25 +330,42 @@ public class CategoryList extends SherlockActivity implements AdCallbackListener
 
     private AlertDialog alertDialog;
     public void showAlertDialog(Context context, String title, String message) {
-        alertDialog = new AlertDialog.Builder(context).create();
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        //alertDialog = new AlertDialog.Builder(context).create();
 
         // Setting Dialog Title
-        alertDialog.setTitle(title);
+        builder.setTitle(title);
 
         // Setting Dialog Message
-        alertDialog.setMessage(message);
+        builder.setMessage(message);
+
 
         // Setting alert dialog icon
-        //alertDialog.setIcon(R.drawable.fail);
+        if(checkUpdate){
+            builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    new RkDetail().execute(new Object());
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+        }else {
+            alertDialog.setIcon(R.drawable.fail);
+            // Setting OK Button
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+        }
 
-        // Setting OK Button
-        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                //finish();
-            }
-        });
-
+        alertDialog = builder.create();
         // Showing Alert Message
         alertDialog.show();
     }
@@ -361,37 +379,37 @@ public class CategoryList extends SherlockActivity implements AdCallbackListener
 
         @Override
         public void onSmartWallAdClosed() {
-            Toast.makeText(CategoryList.this, "onSmartWallAdClosed", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(CategoryList.this, "onSmartWallAdClosed", Toast.LENGTH_SHORT).show();
             //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
         public void onAdError(String s) {
-            Toast.makeText(CategoryList.this, "onAdError"+s, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(CategoryList.this, "onAdError"+s, Toast.LENGTH_SHORT).show();
             //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
         public void onSDKIntegrationError(String s) {
-            Toast.makeText(CategoryList.this, "onSDKIntegrationError", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(CategoryList.this, "onSDKIntegrationError", Toast.LENGTH_SHORT).show();
             //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
         public void onVideoAdFinished() {
-            Toast.makeText(CategoryList.this, "onVideoAdFinished", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(CategoryList.this, "onVideoAdFinished", Toast.LENGTH_SHORT).show();
             //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
         public void onVideoAdShowing() {
-            Toast.makeText(CategoryList.this, "onVideoAdShowing", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(CategoryList.this, "onVideoAdShowing", Toast.LENGTH_SHORT).show();
             //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
         public void onAdCached(AdType adType) {
-            Toast.makeText(CategoryList.this, "onAdCached", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(CategoryList.this, "onAdCached", Toast.LENGTH_SHORT).show();
             airPlay.showCachedAd(CategoryList.this, AdType.interstitial);
         }
     };

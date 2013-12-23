@@ -1,4 +1,4 @@
-package com.ruby.rkandro.pojo;
+package com.ruby.gobzy.sync.pojo;
 
 public class Category {	
 	private Integer id;

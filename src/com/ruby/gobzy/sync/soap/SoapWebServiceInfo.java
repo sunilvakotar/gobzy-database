@@ -1,4 +1,4 @@
-package com.ruby.rkandro.soap;
+package com.ruby.gobzy.sync.soap;
 
 public class SoapWebServiceInfo {
 	

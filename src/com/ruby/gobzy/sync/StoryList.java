@@ -1,8 +1,7 @@
-package com.ruby.rkandro;
+package com.ruby.gobzy.sync;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -10,12 +9,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
-import com.lmsa.cqkv143768.AdCallbackListener;
-import com.lmsa.cqkv143768.AdView;
-import com.lmsa.cqkv143768.AirPlay;
-import com.ruby.rkandro.adapter.StoryAdapter;
-import com.ruby.rkandro.db.StoryDataSource;
-import com.ruby.rkandro.pojo.Story;
+import com.ukfc.klno167797.AdCallbackListener;
+import com.ukfc.klno167797.AdView;
+import com.ukfc.klno167797.AirSDK;
+import com.ruby.gobzy.sync.adapter.StoryAdapter;
+import com.ruby.gobzy.sync.db.StoryDataSource;
+import com.ruby.gobzy.sync.pojo.Story;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,7 @@ public class StoryList extends SherlockActivity implements AdCallbackListener.Mr
 
     private List<Story> storyList = new ArrayList<Story>();
     StoryAdapter storyAdapter;
-    AirPlay airPlay;
+    AirSDK airPlay;
 
     StoryDataSource dataSource;
 
@@ -84,7 +83,7 @@ public class StoryList extends SherlockActivity implements AdCallbackListener.Mr
 
         }
 
-        airPlay=new AirPlay(this, adCallbackListener, true);
+        airPlay=new AirSDK(this, adCallbackListener, true);
         AdView adView=(AdView)findViewById(R.id.myAdView);
         adView.setAdListener(this);
     }

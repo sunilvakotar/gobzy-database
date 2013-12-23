@@ -1,4 +1,4 @@
-package com.ruby.rkandro;
+package com.ruby.gobzy.sync;
 
 /**
  * Created.

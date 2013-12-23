@@ -1,9 +1,9 @@
-package com.ruby.rkandro.constant;
+package com.ruby.gobzy.sync.constant;
 
 public class Constant {
 	
 	public static final String DB_NAME = "story.db";
-	public static final String DB_PATH = "/data/data/com.ruby.rkandro/databases/";
+	public static final String DB_PATH = "/data/data/com.ruby.gobzy.sync/databases/";
 	public static final int DB_VERSION = 1;
 	
 	public static final String ID = "_id";

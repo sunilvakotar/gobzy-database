@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.ruby.rkandro"
+          package="com.ruby.gobzy.sync"
           android:versionCode="1"
           android:versionName="1.0">
 
@@ -37,25 +37,25 @@
                   android:theme="@android:style/Theme.Translucent"
                   android:configChanges="keyboard|keyboardHidden|orientation" />
         <activity android:name="com.startapp.android.publish.list3d.List3DActivity"
-                  android:taskAffinity="com.ruby.rkandro.AppWall"
+                  android:taskAffinity="com.ruby.gobzy.sync.AppWall"
                   android:theme="@android:style/Theme" />
         <activity android:name="com.startapp.android.publish.AppWallActivity"
-                  android:theme="@android:style/Theme.Translucent" android:taskAffinity="com.ruby.rkandro.AppWall"
+                  android:theme="@android:style/Theme.Translucent" android:taskAffinity="com.ruby.gobzy.sync.AppWall"
                   android:configChanges="orientation|keyboardHidden" />
 
         <!-- Your developer ID and app ID -->
-        <meta-data android:name="com.startapp.android.DEV_ID" android:value= "105147417"/>
-        <meta-data android:name="com.startapp.android.APP_ID" android:value= "205460888"/>
+        <meta-data android:name="com.startapp.android.DEV_ID" android:value= "111520183"/>
+        <meta-data android:name="com.startapp.android.APP_ID" android:value= "212856248"/>
 
-        <meta-data android:name="com.lmsa.cqkv143768.APPID" android:value="178714" />
-        <meta-data android:name="com.lmsa.cqkv143768.APIKEY" android:value="android*1365437438143768527"/>
-        <activity android:exported="false" android:name="com.lmsa.cqkv143768.SmartWallActivity"
+        <meta-data android:name="com.ukfc.klno167797.APPID" android:value="196330" />
+        <meta-data android:name="com.ukfc.klno167797.APIKEY" android:value="android*1385542002167797780"/>
+        <activity android:exported="false" android:name="com.ukfc.klno167797.SmartWallActivity"
                   android:configChanges="orientation|screenSize"
                   android:theme="@android:style/Theme.Translucent" />
 
-        <activity android:name="com.lmsa.cqkv143768.BrowserActivity"
+        <activity android:name="com.ukfc.klno167797.BrowserActivity"
                   android:configChanges="orientation|screenSize" />
-        <activity android:name="com.lmsa.cqkv143768.VideoAdActivity"
+        <activity android:name="com.ukfc.klno167797.VideoAdActivity"
                   android:configChanges="orientation|screenSize" android:screenOrientation="landscape"
                   android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>

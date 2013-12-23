@@ -1,27 +1,18 @@
-package com.ruby.rkandro;
+package com.ruby.gobzy.sync;
 
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
 import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
-import com.lmsa.cqkv143768.AdCallbackListener;
-import com.lmsa.cqkv143768.AirPlay;
-import com.ruby.rkandro.db.StoryDataSource;
-import com.ruby.rkandro.pojo.Story;
-import com.ruby.rkandro.soap.SoapWebServiceInfo;
-import com.ruby.rkandro.soap.SoapWebServiceUtility;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.ukfc.klno167797.AdCallbackListener;
+import com.ukfc.klno167797.AirSDK;
+import com.ruby.gobzy.sync.db.StoryDataSource;
+import com.ruby.gobzy.sync.pojo.Story;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -42,7 +33,7 @@ public class StoryListDetail extends SherlockActivity implements AdCallbackListe
 	TextView textDescription;
     //ImageView closeButton;
     //RelativeLayout adsLayout;
-    AirPlay airPlay;
+    AirSDK airPlay;
 
     StoryDataSource dataSource;
 
@@ -85,8 +76,10 @@ public class StoryListDetail extends SherlockActivity implements AdCallbackListe
 
         @Override
         public void onAdCached(AdType adType) {
-            //Toast.makeText(StoryListDetail.this, "onAdCached", Toast.LENGTH_SHORT).show();
-            //airPlay.showCachedAd(StoryListDetail.this, AdType.appwall);
+            if(loadOnStart){
+                airPlay.showCachedAd(StoryListDetail.this, AdCallbackListener.AdType.smartwall);
+                loadOnStart = false;
+            }
         }
     };
 
@@ -109,7 +102,7 @@ public class StoryListDetail extends SherlockActivity implements AdCallbackListe
         // Look up the AdView as a resource and load a request.
         //new RkDescription().execute(new Object());
 
-        airPlay = new AirPlay(this, adCallbackListener, true);
+        airPlay = new AirSDK(this, adCallbackListener, true);
         airPlay.startSmartWallAd();
         airPlay.showRichMediaInterstitialAd();
 
@@ -122,8 +115,8 @@ public class StoryListDetail extends SherlockActivity implements AdCallbackListe
         }
         // schedule task
         mTimer.scheduleAtFixedRate(new PopupDisplayTimerTask(), NOTIFY_INTERVAL, NOTIFY_INTERVAL);
-        //airPlay.showRichMediaInterstitialAd();
-        airPlay.showCachedAd(StoryListDetail.this, AdCallbackListener.AdType.smartwall);
+        //airPlay.showCachedAd(StoryListDetail.this, AdCallbackListener.AdType.smartwall);
+        loadOnStart = true;
     }
 
     @Override
@@ -141,7 +134,6 @@ public class StoryListDetail extends SherlockActivity implements AdCallbackListe
     protected void onDestroy() {
         if (mTimer != null) {
             mTimer.cancel();
-            //Toast.makeText(getApplicationContext(), "Stop timer",Toast.LENGTH_SHORT).show();
         }
         super.onDestroy();
     }
@@ -152,10 +144,13 @@ public class StoryListDetail extends SherlockActivity implements AdCallbackListe
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    private boolean loadOnStart = true;
     @Override
     public void onAdLoadedListener() {
-        //Toast.makeText(StoryListDetail.this, "onAdLoadedListener", Toast.LENGTH_SHORT).show();
-        //To change body of implemented methods use File | Settings | File Templates.
+        if(loadOnStart){
+            airPlay.showCachedAd(StoryListDetail.this, AdCallbackListener.AdType.smartwall);
+            loadOnStart = false;
+        }
     }
 
     @Override

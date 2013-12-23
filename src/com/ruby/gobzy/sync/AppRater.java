@@ -1,4 +1,4 @@
-package com.ruby.rkandro;
+package com.ruby.gobzy.sync;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -18,7 +18,7 @@ import android.widget.TextView;
  * To change this template use File | Settings | File Templates.
  */
 public class AppRater {
-    private final static String APP_PNAME = "com.ruby.rkandro";
+    private final static String APP_PNAME = "com.ruby.gobzy.sync";
     private final static String APP_NAME = "Indian Desi Sex Stories";
 
     private final static int DAYS_UNTIL_PROMPT = 7;

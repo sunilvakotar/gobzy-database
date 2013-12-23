@@ -1,7 +1,7 @@
-package com.ruby.rkandro.pojo;
+package com.ruby.gobzy.sync.pojo;
 
 import java.io.Serializable;
-import java.util.Date;
+
 @SuppressWarnings("serial")
 public class RkListItem implements Serializable {
 

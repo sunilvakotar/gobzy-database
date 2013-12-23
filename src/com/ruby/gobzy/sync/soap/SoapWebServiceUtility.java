@@ -1,4 +1,4 @@
-package com.ruby.rkandro.soap;
+package com.ruby.gobzy.sync.soap;
 
 import java.io.IOException;
 

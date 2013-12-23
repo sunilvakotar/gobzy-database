@@ -15,7 +15,7 @@
         android:dividerHeight="1dp">
     </ListView>
 
-    <com.lmsa.cqkv143768.AdView
+    <com.ukfc.klno167797.AdView
             xmlns:ap="http://schemas.android.com/apk/res-auto"
             android:id="@+id/myAdView"
             android:layout_alignParentBottom="true"

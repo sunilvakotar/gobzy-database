@@ -1,11 +1,11 @@
-package com.ruby.rkandro.db;
+package com.ruby.gobzy.sync.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import com.ruby.rkandro.constant.Constant;
+import com.ruby.gobzy.sync.constant.Constant;
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
 	

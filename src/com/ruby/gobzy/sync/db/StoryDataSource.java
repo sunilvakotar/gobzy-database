@@ -1,15 +1,14 @@
-package com.ruby.rkandro.db;
+package com.ruby.gobzy.sync.db;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import com.ruby.rkandro.constant.Constant;
-import com.ruby.rkandro.pojo.Category;
-import com.ruby.rkandro.pojo.Story;
+import com.ruby.gobzy.sync.constant.Constant;
+import com.ruby.gobzy.sync.pojo.Category;
+import com.ruby.gobzy.sync.pojo.Story;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

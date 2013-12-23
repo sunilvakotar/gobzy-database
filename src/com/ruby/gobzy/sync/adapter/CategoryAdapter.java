@@ -1,4 +1,4 @@
-package com.ruby.rkandro.adapter;
+package com.ruby.gobzy.sync.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,41 +6,41 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import com.ruby.rkandro.R;
-import com.ruby.rkandro.pojo.Story;
+import com.ruby.gobzy.sync.R;
+import com.ruby.gobzy.sync.pojo.Category;
 
 import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
  * User: Sunil Vakotar
- * Date: 12/9/13
- * Time: 3:46 PM
+ * Date: 11/18/13
+ * Time: 4:12 PM
  * To change this template use File | Settings | File Templates.
  */
-public class StoryAdapter extends BaseAdapter {
-    private List<Story> storyList;
+public class CategoryAdapter extends BaseAdapter{
+    private List<Category> categoryList;
     private Context context;
 
-    public StoryAdapter(Context context, List<Story> storyList) {
-        this.storyList = storyList;
+    public CategoryAdapter(Context context, List<Category> categoryList) {
+        this.categoryList = categoryList;
         this.context = context;
     }
 
     @Override
     public int getCount() {
-        return storyList.size();  //To change body of implemented methods use File | Settings | File Templates.
+        return categoryList.size();  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public Object getItem(int position) {
-        return storyList.get(position);  //To change body of implemented methods use File | Settings | File Templates.
+        return categoryList.get(position);  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public long getItemId(int position) {
-        Story story = storyList.get(position);
-        return story.getId();
+        Category category = categoryList.get(position);
+        return category.getId();
     }
 
     @Override
@@ -53,10 +53,10 @@ public class StoryAdapter extends BaseAdapter {
         }else{
             row = view;
         }
-        Story story = storyList.get(position);
+        Category category = categoryList.get(position);
 
         TextView Title = (TextView) row.findViewById(R.id.TextTitle);
-        Title.setText(story.getStoryName());
+        Title.setText(category.getCategoryName());
 
         return row;
     }

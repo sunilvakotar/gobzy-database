@@ -1,4 +1,4 @@
-package com.ruby.rkandro.adapter;
+package com.ruby.gobzy.sync.adapter;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.ruby.rkandro.R;
-import com.ruby.rkandro.pojo.RkListItem;
+import com.ruby.gobzy.sync.R;
+import com.ruby.gobzy.sync.pojo.RkListItem;
 
 public class RkListAdapter extends BaseAdapter {
 
