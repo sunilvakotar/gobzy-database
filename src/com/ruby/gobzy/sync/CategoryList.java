@@ -271,8 +271,6 @@ public class CategoryList extends SherlockActivity implements AdCallbackListener
                     result = SoapWebServiceUtility.callWebService(envelop, SoapWebServiceInfo.CHECK_UPDATE_ACTION, SoapWebServiceInfo.CHECK_UPDATE_RESULT_TAG);
                     if(result != null){
                         JSONObject resJsonObj = new JSONObject(result);
-                        /*JSONArray detailArray = (JSONArray) resJsonObj.get("Total");
-                        total = (Integer) detailArray.get(0);*/
                         total = (Integer) resJsonObj.get("Total");
                         dbCount = dataSource.getStoryCount();
 
@@ -313,8 +311,8 @@ public class CategoryList extends SherlockActivity implements AdCallbackListener
             if (checkUpdate) {
                 if(total > dbCount){
                     showAlertDialog(CategoryList.this, "Update", "New Story Available on cloud. You can update by click refresh button on top right corner.");
-                    checkUpdate = false;
                 }
+                checkUpdate = false;
             } else {
                 if (categoryList.size() > 0) {
                     categoryAdapter = new CategoryAdapter(CategoryList.this, categoryList);

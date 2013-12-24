@@ -97,43 +97,43 @@ public class StoryList extends SherlockActivity implements AdCallbackListener.Mr
     AdCallbackListener adCallbackListener = new AdCallbackListener() {
         @Override
         public void onSmartWallAdShowing() {
-            Toast.makeText(StoryList.this, "onAdCached", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(StoryList.this, "onAdCached", Toast.LENGTH_SHORT).show();
             //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
         public void onSmartWallAdClosed() {
-            Toast.makeText(StoryList.this, "onSmartWallAdClosed", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(StoryList.this, "onSmartWallAdClosed", Toast.LENGTH_SHORT).show();
             //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
         public void onAdError(String s) {
-            Toast.makeText(StoryList.this, "onAdError"+s, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(StoryList.this, "onAdError"+s, Toast.LENGTH_SHORT).show();
             //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
         public void onSDKIntegrationError(String s) {
-            Toast.makeText(StoryList.this, "onSDKIntegrationError", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(StoryList.this, "onSDKIntegrationError", Toast.LENGTH_SHORT).show();
             //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
         public void onVideoAdFinished() {
-            Toast.makeText(StoryList.this, "onVideoAdFinished", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(StoryList.this, "onVideoAdFinished", Toast.LENGTH_SHORT).show();
             //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
         public void onVideoAdShowing() {
-            Toast.makeText(StoryList.this, "onVideoAdShowing", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(StoryList.this, "onVideoAdShowing", Toast.LENGTH_SHORT).show();
             //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
         public void onAdCached(AdType adType) {
-            Toast.makeText(StoryList.this, "onAdCached", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(StoryList.this, "onAdCached", Toast.LENGTH_SHORT).show();
             //airPlay.showCachedAd(StoryList.this, AdType.interstitial);
         }
     };

@@ -19,7 +19,7 @@ import android.widget.TextView;
  */
 public class AppRater {
     private final static String APP_PNAME = "com.ruby.gobzy.sync";
-    private final static String APP_NAME = "Indian Desi Stories Offline";
+    private final static String APP_NAME = "Latest Desi Stories Offline";
 
     private final static int DAYS_UNTIL_PROMPT = 7;
     private final static int LAUNCHES_UNTIL_PROMPT = 7;
