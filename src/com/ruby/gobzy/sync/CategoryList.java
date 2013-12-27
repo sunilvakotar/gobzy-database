@@ -101,9 +101,6 @@ public class CategoryList extends SherlockActivity implements AdCallbackListener
                 // Internet Connection is Present
                 new RkDetail().execute(new Object());
 
-                airPlay=new AirSDK(this, adCallbackListener, true);
-                AdView adView=(AdView)findViewById(R.id.myAdView);
-                adView.setAdListener(this);
             } else {
                 // Internet connection is not present
                 // Ask user to connect to Internet
@@ -146,34 +143,12 @@ public class CategoryList extends SherlockActivity implements AdCallbackListener
 
     @Override
     public void onBackPressed() {
-        startAppAd.onBackPressed();
-        this.finish();
+        Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+        homeIntent.addCategory(Intent.CATEGORY_HOME);
+        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(homeIntent);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add("refresh").setIcon(R.drawable.ic_refresh_inverse).
-                setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        String title = (String) item.getTitle();
-        if (title.equalsIgnoreCase("refresh")) {
-            boolean isInternetPresent = cd.isConnectingToInternet();
-
-            if (isInternetPresent) {
-                new RkDetail().execute(new Object());
-            } else {
-                // Internet connection is not present
-                // Ask user to connect to Internet
-                showAlertDialog(CategoryList.this, "No Internet Connection",
-                        "You don't have internet connection.");
-            }
-        }
-        return true;
-    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -211,6 +186,8 @@ public class CategoryList extends SherlockActivity implements AdCallbackListener
             story.setStoryName((String) detailArray.get(1));
             story.setStoryDesc((String) detailArray.get(2));
             story.setStoryCategoryId((Integer) detailArray.get(3));
+            String date = (String) detailArray.get(4);
+            story.setCreateDate(Long.parseLong(date.substring(date.indexOf('(')+1,date.indexOf(')'))));
             details.add(story);
         }
         return details;

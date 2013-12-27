@@ -1,0 +1,48 @@
+<RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="@drawable/list_bg">
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="29dp"
+            android:text="Enter Password"
+            android:id="@+id/textView"
+            android:layout_centerHorizontal="true" android:layout_alignParentTop="true"
+            android:layout_marginTop="50dp" android:layout_alignParentLeft="true" android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textColor="@color/white" android:textSize="18sp" android:textStyle="italic"/>
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/passwordText"
+            android:inputType="textPassword"
+            android:layout_below="@+id/textView"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp" style="@style/Rk.ActionBar.TitleTextStyle"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:id="@+id/loginBtn" android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/passwordText"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/errorMsg" android:layout_below="@+id/loginBtn"
+            android:layout_centerHorizontal="true" android:textColor="@color/white" android:textStyle="normal|italic"
+            android:textSize="16sp" android:layout_margin="20dp"/>
+
+    <com.ukfc.klno167797.AdView
+            xmlns:ap="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/myAdView"
+            android:layout_alignParentBottom="true"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            ap:animation="fade"
+            ap:banner_type="inappad"
+            ap:placementType="interstitial"
+            ap:test_mode="false"
+            ap:canShowMR="false"
+            />
+</RelativeLayout>

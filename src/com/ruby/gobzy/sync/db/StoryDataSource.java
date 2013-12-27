@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.ruby.gobzy.sync.constant.Constant;
 import com.ruby.gobzy.sync.pojo.Category;
 import com.ruby.gobzy.sync.pojo.Story;
+import com.ruby.gobzy.sync.pojo.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,8 @@ public class StoryDataSource {
 	private String[] storiesColumns = { Constant.ID, Constant.STORY_CATEGORY_ID, Constant.STORY_NAME};
 	private String[] allStoriesColumns = { Constant.ID, Constant.STORY_CATEGORY_ID, Constant.STORY_NAME, Constant.STORY_DESC};
 	private String[] categoryColumns = { Constant.ID, Constant.CATEGORY_NAME};
-	
+    private String[] userColumns = {Constant.ID, Constant.USERNAME, Constant.USER_PWD};
+
 	public StoryDataSource(Context context){
 		databaseHelper = new MyDatabaseHelper(context);
 	}
@@ -30,6 +32,29 @@ public class StoryDataSource {
 	public void close() {
 		databaseHelper.close();
 	}
+
+    public User getUser(){
+        User user = null;
+        Cursor cursor = database.query(Constant.TABLE_USER, userColumns,
+                null, null, null, null, null);
+        if(cursor.getCount() > 0){
+            cursor.moveToFirst();
+            user = new User();
+            user.setId(cursor.getInt(0));
+            user.setUsername(cursor.getString(1));
+            user.setPassword(cursor.getString(2));
+        }
+        cursor.close();
+        return user;
+    }
+
+    public void saveUser(String password){
+        ContentValues userValues = new ContentValues();
+        userValues.put(Constant.ID, 1);
+        userValues.put(Constant.USERNAME, "user");
+        userValues.put(Constant.USER_PWD, password);
+        database.insert(Constant.TABLE_USER, null, userValues);
+    }
 	
 	public List<Category> getCategories(){
         List<Category> categories = new ArrayList<Category>();
@@ -55,10 +80,11 @@ public class StoryDataSource {
 	public List<Story> getStoryByCategory(int categoryId){
 		List<Story> stories = new ArrayList<Story>();
 		Cursor cursor = database.query(Constant.TABLE_STORY, storiesColumns,
-				Constant.STORY_CATEGORY_ID + " = " + categoryId, null, null, null, null);
+				Constant.STORY_CATEGORY_ID + " = " + categoryId, null, null, null, Constant.STORY_CREATE_DATE + " DESC");
 		cursor.moveToFirst();
+        int count = 1;
 		while (!cursor.isAfterLast()){
-            Story course = cursorToStory(cursor, false);
+            Story course = cursorToStory(cursor, false, count++);
             stories.add(course);
 			cursor.moveToNext();
 		}
@@ -97,17 +123,21 @@ public class StoryDataSource {
 				Constant.ID + " = " + storyId, null, null, null, null);
 		if(cursor.getCount() > 0){
 			cursor.moveToFirst();
-			story = cursorToStory(cursor, true);
+			story = cursorToStory(cursor, true, 0);
 		}
 		cursor.close();
 		return story;
 	}
 	
-	private Story cursorToStory(Cursor cursor, boolean all) {
+	private Story cursorToStory(Cursor cursor, boolean all, int count) {
         Story story = new Story();
         story.setId(cursor.getInt(0));
         story.setStoryCategoryId(cursor.getInt(1));
-        story.setStoryName(cursor.getString(2));
+        if(count > 0){
+            story.setStoryName(count+". "+cursor.getString(2));
+        }else{
+            story.setStoryName(cursor.getString(2));
+        }
         if(all){
             story.setStoryDesc(cursor.getString(3));
         }
@@ -141,6 +171,7 @@ public class StoryDataSource {
                 storyValues.put(Constant.STORY_NAME, story.getStoryName());
                 storyValues.put(Constant.STORY_DESC, story.getStoryDesc());
                 storyValues.put(Constant.STORY_CATEGORY_ID, story.getStoryCategoryId());
+                storyValues.put(Constant.STORY_CREATE_DATE, story.getCreateDate());
                 database.insert(Constant.TABLE_STORY, null, storyValues);
             }
         }
