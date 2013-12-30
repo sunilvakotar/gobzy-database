@@ -145,7 +145,6 @@ public class CategoryList extends SherlockActivity implements AdCallbackListener
     public void onBackPressed() {
         Intent homeIntent = new Intent(Intent.ACTION_MAIN);
         homeIntent.addCategory(Intent.CATEGORY_HOME);
-        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(homeIntent);
     }
 
@@ -287,7 +286,7 @@ public class CategoryList extends SherlockActivity implements AdCallbackListener
             super.onPostExecute(result);
             if (checkUpdate) {
                 if(total > dbCount){
-                    showAlertDialog(CategoryList.this, "Update", "New Story Available on cloud. You can update by click refresh button on top right corner.");
+                    showAlertDialog(CategoryList.this, "Update", "New Story Available on cloud. You can update stories by clicking Update button below.");
                 }
                 checkUpdate = false;
             } else {
