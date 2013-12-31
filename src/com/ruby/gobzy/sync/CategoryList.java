@@ -143,9 +143,8 @@ public class CategoryList extends SherlockActivity implements AdCallbackListener
 
     @Override
     public void onBackPressed() {
-        Intent homeIntent = new Intent(Intent.ACTION_MAIN);
-        homeIntent.addCategory(Intent.CATEGORY_HOME);
-        startActivity(homeIntent);
+        super.onBackPressed();
+        startAppAd.onBackPressed();
     }
 
 

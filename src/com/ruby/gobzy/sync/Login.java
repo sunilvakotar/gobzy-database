@@ -3,6 +3,7 @@ package com.ruby.gobzy.sync;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -66,7 +67,9 @@ public class Login extends SherlockActivity  implements AdCallbackListener.Mraid
                             password.setText("");
                             retypePassword.setText("");
                             Intent i = new Intent(Login.this, CategoryList.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(i);
+                            finish();
                         } else {
                             password.setText("");
                             retypePassword.setText("");
@@ -91,7 +94,9 @@ public class Login extends SherlockActivity  implements AdCallbackListener.Mraid
                         if (user.getPassword().equals(pwd)) {
                             password.setText("");
                             Intent i = new Intent(Login.this, CategoryList.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(i);
+                            finish();
                         } else {
                             password.setText("");
                             errorMsg.setText("Sorry. You have entered wrong password.");
@@ -106,6 +111,15 @@ public class Login extends SherlockActivity  implements AdCallbackListener.Mraid
         airPlay=new AirSDK(this, adCallbackListener, true);
         AdView adView=(AdView)findViewById(R.id.myAdView);
         adView.setAdListener(this);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(true);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
