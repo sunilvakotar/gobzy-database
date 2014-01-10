@@ -256,8 +256,8 @@ public class CategoryList extends SherlockActivity implements AdCallbackListener
                     if(result != null){
                         JSONObject resJsonObj = new JSONObject(result);
                         categoryList = convertJsonToCategoryList(resJsonObj);
-                        dataSource.addAllCategory(categoryList);
                         if(categoryList.size() > 0){
+                            dataSource.addAllCategory(categoryList);
                             List<Story> storyList;
                             for (Category category : categoryList) {
                                 envelop = String.format(SoapWebServiceInfo.STORY_ENVELOPE, category.getId());

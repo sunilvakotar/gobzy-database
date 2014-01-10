@@ -144,36 +144,32 @@ public class StoryDataSource {
 		return story;
 	}
 
+    public void truncateTable(){
+        database.execSQL("delete from "+Constant.TABLE_CATEGORY);
+        database.execSQL("delete from "+Constant.TABLE_STORY);
+    }
+
     public void addAllCategory(List<Category> categoryList){
-        Cursor cursor;
+        truncateTable();
         ContentValues categoryValues;
-        for (Category category:categoryList){
-            cursor = database.query(Constant.TABLE_CATEGORY, categoryColumns
-                    , Constant.ID +" = "+category.getId(),null,null,null,null);
-            if(cursor.getCount() <= 0){
-                categoryValues = new ContentValues();
-                categoryValues.put(Constant.ID, category.getId());
-                categoryValues.put(Constant.CATEGORY_NAME, category.getCategoryName());
-                database.insert(Constant.TABLE_CATEGORY, null, categoryValues);
-            }
+        for (Category category : categoryList) {
+            categoryValues = new ContentValues();
+            categoryValues.put(Constant.ID, category.getId());
+            categoryValues.put(Constant.CATEGORY_NAME, category.getCategoryName());
+            database.insert(Constant.TABLE_CATEGORY, null, categoryValues);
         }
     }
 
     public void addStories(List<Story> storyList){
-        Cursor cursor;
         ContentValues storyValues;
-        for (Story story:storyList){
-            cursor = database.query(Constant.TABLE_STORY, allStoriesColumns
-                    , Constant.ID +" = "+story.getId(),null,null,null,null);
-            if(cursor.getCount() <= 0){
-                storyValues = new ContentValues();
-                storyValues.put(Constant.ID, story.getId());
-                storyValues.put(Constant.STORY_NAME, story.getStoryName());
-                storyValues.put(Constant.STORY_DESC, story.getStoryDesc());
-                storyValues.put(Constant.STORY_CATEGORY_ID, story.getStoryCategoryId());
-                storyValues.put(Constant.STORY_CREATE_DATE, story.getCreateDate());
-                database.insert(Constant.TABLE_STORY, null, storyValues);
-            }
+        for (Story story : storyList) {
+            storyValues = new ContentValues();
+            storyValues.put(Constant.ID, story.getId());
+            storyValues.put(Constant.STORY_NAME, story.getStoryName());
+            storyValues.put(Constant.STORY_DESC, story.getStoryDesc());
+            storyValues.put(Constant.STORY_CATEGORY_ID, story.getStoryCategoryId());
+            storyValues.put(Constant.STORY_CREATE_DATE, story.getCreateDate());
+            database.insert(Constant.TABLE_STORY, null, storyValues);
         }
     }
 }
